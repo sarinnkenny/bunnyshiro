@@ -46,7 +46,7 @@
     <!-- Loading Screen -->
     <div id="loading-screen" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center transition-opacity duration-500">
         <div class="w-10 h-10 border-4 border-brand-200 border-t-brand-500 rounded-full animate-spin mb-4"></div>
-        <p class="font-cute text-brand-600 font-bold text-lg">Bunny Shiro Shop...</p>
+        <p class="font-cute text-brand-600 font-bold text-lg">Bunny Shiro Connecting...</p>
     </div>
 
     <div class="max-w-md mx-auto min-h-screen bg-white shadow-xl relative overflow-hidden flex flex-col">
@@ -82,7 +82,7 @@
             </div>
         </section>
 
-        <!-- Product Section -->
+        <!-- Shop Section -->
         <section id="product-section" class="px-5 pb-8 bg-brand-50/30 rounded-t-3xl pt-8 flex-grow">
             <div class="flex gap-2 mb-6">
                 <div class="relative flex-grow">
@@ -102,7 +102,7 @@
                 <button id="admin-add-btn" class="bg-brand-100 text-brand-600 font-semibold py-3 rounded-2xl border border-dashed border-brand-300 text-sm flex items-center justify-center gap-2 active:scale-95">
                     <i data-lucide="plus-circle" class="w-4 h-4"></i> เพิ่มสินค้า
                 </button>
-                <button id="admin-tags-btn" class="bg-purple-50 text-purple-600 font-semibold py-3 rounded-2xl border border-dashed border-purple-300 text-sm flex items-center justify-center gap-2 active:scale-95 text-center">
+                <button id="admin-tags-btn" class="bg-purple-50 text-purple-600 font-semibold py-3 rounded-2xl border border-dashed border-purple-300 text-sm flex items-center justify-center gap-2 active:scale-95">
                     <i data-lucide="tags" class="w-4 h-4"></i> จัดการแท็ก
                 </button>
             </div>
@@ -123,26 +123,39 @@
                 </a>
             </div>
             <button id="admin-login-trigger" class="user-only text-sm text-slate-400 py-2 px-4 rounded-full hover:bg-slate-50 transition-colors">สำหรับ Admin</button>
-            <button id="admin-logout-trigger" class="admin-only text-sm text-red-400 py-2 px-4 rounded-full hover:bg-red-50 transition-colors text-center">ออกจากระบบ Admin</button>
+            <button id="admin-logout-trigger" class="admin-only text-sm text-red-400 py-2 px-4 rounded-full hover:bg-red-50 transition-colors">ออกจากระบบ Admin</button>
         </footer>
 
-        <!-- Floating Cart -->
-        <div class="user-only fixed bottom-6 right-6 z-[45] sm:right-[calc(50%-200px)]">
+        <!-- Cart Badge UI -->
+        <div class="user-only fixed bottom-6 right-6 z-[45] sm:right-[calc(50%-200px)] text-center">
             <button id="floating-cart-btn" class="relative bg-brand-500 text-white p-4 rounded-full shadow-xl active:scale-90 transition-all flex items-center justify-center">
-                <i data-lucide="shopping-cart" class="w-7 h-7"></i>
-                <span id="cart-badge" class="absolute -top-1 -right-1 bg-pink-500 text-white text-[11px] font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-white scale-0 transition-transform pointer-events-none">0</span>
+                <i data-lucide="shopping-cart" class="w-7 h-7 text-center"></i>
+                <span id="cart-badge" class="absolute -top-1 -right-1 bg-pink-500 text-white text-[11px] font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-white scale-0 transition-transform pointer-events-none text-center">0</span>
             </button>
         </div>
 
         <!-- ================= MODALS ================= -->
         
-        <!-- How to Order Modal (Fixed Layout) -->
+        <!-- Password Modal -->
+        <div id="password-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
+            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay"></div>
+            <div class="bg-white w-full max-w-[320px] rounded-3xl p-6 shadow-2xl relative z-10 modal-enter border text-center">
+                <h3 class="font-bold text-lg mb-5 text-slate-800">เข้าสู่ระบบ Admin</h3>
+                <input type="password" id="admin-password-input" placeholder="ใส่รหัสผ่านแอดมิน" class="w-full px-4 py-3 bg-slate-50 border-2 rounded-xl outline-none text-center mb-6 focus:border-brand-400 transition-all">
+                <div class="flex gap-3">
+                    <button type="button" class="modal-close-icon flex-1 py-3 bg-slate-100 rounded-xl font-semibold text-slate-600">ยกเลิก</button>
+                    <button id="admin-login-submit" class="flex-1 py-3 bg-brand-500 text-white rounded-xl font-bold shadow-lg active:scale-95 transition-all">ยืนยัน</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Order Modal -->
         <div id="how-to-modal" class="fixed inset-0 z-[75] hidden items-center justify-center p-4">
             <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay"></div>
             <div class="bg-white w-full max-w-[320px] rounded-3xl p-6 shadow-2xl relative z-10 modal-enter border">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="font-bold text-xl text-brand-600 flex items-center gap-2"><i data-lucide="help-circle" class="w-5 h-5"></i> วิธีสั่งซื้อ</h3>
-                    <button class="modal-close-icon text-slate-400 p-1 hover:bg-slate-100 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+                    <button class="modal-close-icon text-slate-400 p-1 hover:bg-slate-100 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5 pointer-events-none"></i></button>
                 </div>
                 <div class="space-y-5">
                     <div class="flex items-center gap-4">
@@ -166,24 +179,11 @@
             </div>
         </div>
 
-        <!-- Password Modal -->
-        <div id="password-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-            <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay"></div>
-            <div class="bg-white w-full max-w-[320px] rounded-3xl p-6 shadow-2xl relative z-10 modal-enter border text-center">
-                <h3 class="font-bold text-lg mb-5 text-slate-800">เข้าสู่ระบบ Admin</h3>
-                <input type="password" id="admin-password-input" placeholder="ใส่รหัสผ่านแอดมิน" class="w-full px-4 py-3 bg-slate-50 border-2 rounded-xl outline-none text-center mb-6 focus:border-brand-400 transition-all">
-                <div class="flex gap-3">
-                    <button type="button" class="modal-close-icon flex-1 py-3 bg-slate-100 rounded-xl font-semibold text-slate-600">ยกเลิก</button>
-                    <button id="admin-login-submit" class="flex-1 py-3 bg-brand-500 text-white rounded-xl font-bold shadow-lg active:scale-95 transition-all">ยืนยัน</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tag Manager -->
+        <!-- Tag Manager Modal -->
         <div id="tag-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
             <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay"></div>
             <div class="bg-white w-full max-w-[340px] rounded-3xl p-6 shadow-2xl relative z-10 modal-enter border flex flex-col">
-                <div class="flex justify-between items-center mb-5"><h3 class="font-bold text-xl text-slate-800">จัดการแท็ก</h3><button class="modal-close-icon text-slate-400"><i data-lucide="x" class="w-5 h-5"></i></button></div>
+                <div class="flex justify-between items-center mb-5"><h3 class="font-bold text-xl text-slate-800">จัดการแท็ก</h3><button class="modal-close-icon text-slate-400"><i data-lucide="x" class="w-5 h-5 pointer-events-none"></i></button></div>
                 <div id="tag-list-display" class="space-y-2 mb-6 max-h-48 overflow-y-auto pr-2 hide-scrollbar"></div>
                 <div class="bg-slate-50 p-4 rounded-2xl border">
                     <label class="block text-sm font-medium mb-2 text-slate-600">เพิ่มแท็กใหม่</label>
@@ -197,22 +197,32 @@
             </div>
         </div>
 
-        <!-- Product Form -->
+        <!-- Product Form Modal -->
         <div id="product-modal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4">
             <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay"></div>
             <div class="bg-white w-full max-w-[360px] rounded-3xl p-6 shadow-2xl relative z-10 modal-enter border max-h-[90vh] overflow-y-auto flex flex-col">
-                <div class="flex justify-between items-center mb-5"><h3 id="product-modal-title" class="font-bold text-xl text-slate-800">จัดการสินค้า</h3><button class="modal-close-icon text-slate-400"><i data-lucide="x" class="w-5 h-5 text-center"></i></button></div>
+                <div class="flex justify-between items-center mb-5"><h3 id="product-modal-title" class="font-bold text-xl text-slate-800">จัดการสินค้า</h3><button class="modal-close-icon text-slate-400"><i data-lucide="x" class="w-5 h-5 pointer-events-none"></i></button></div>
                 <div class="space-y-4">
-                    <div><label class="block text-sm font-medium mb-1 pl-1 text-slate-600">รูปภาพสินค้า</label><div class="border-2 border-dashed border-brand-300 rounded-2xl p-2 relative min-h-[140px] flex items-center justify-center bg-slate-50 overflow-hidden cursor-pointer"><input type="file" id="form-image-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"><div id="form-image-placeholder" class="flex flex-col items-center"><i data-lucide="image-plus" class="w-8 h-8 text-brand-400 pointer-events-none"></i><span class="text-sm text-brand-600 font-medium pointer-events-none">แตะเพื่อเลือกรูป</span></div><img id="form-image-preview" class="hidden w-full h-32 object-cover rounded-xl pointer-events-none"></div></div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1 pl-1 text-slate-600">รูปภาพสินค้า</label>
+                        <div class="border-2 border-dashed border-brand-300 rounded-2xl p-2 relative min-h-[140px] flex items-center justify-center bg-slate-50 overflow-hidden cursor-pointer group">
+                            <input type="file" id="form-image-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-50">
+                            <div id="form-image-placeholder" class="flex flex-col items-center transition-transform group-hover:scale-105 z-10 pointer-events-none">
+                                <i data-lucide="image-plus" class="w-8 h-8 text-brand-400 pointer-events-none"></i>
+                                <span class="text-sm text-brand-600 font-medium pointer-events-none">แตะเพื่อเลือกรูป</span>
+                            </div>
+                            <img id="form-image-preview" class="hidden w-full h-32 object-cover rounded-xl pointer-events-none z-10">
+                        </div>
+                    </div>
                     <div><label class="block text-sm font-medium mb-1 pl-1 text-slate-600 text-center">แท็กสินค้า</label><select id="form-tag-select" class="w-full px-4 py-2.5 bg-slate-50 border-2 rounded-xl outline-none appearance-none text-center"></select></div>
                     <div><label class="block text-sm font-medium mb-1 pl-1 text-slate-600">ชื่อสินค้า</label><input type="text" id="form-name-input" placeholder="ชื่อสกิน" class="w-full px-4 py-2.5 border-2 rounded-xl outline-none"></div>
-                    <div class="grid grid-cols-2 gap-3"><div><label class="block text-sm font-medium mb-1 pl-1 text-slate-600">สต็อก</label><input type="number" id="form-stock-input" placeholder="0" class="w-full px-4 py-2.5 border-2 rounded-xl outline-none"></div><div><label class="block text-sm font-medium mb-1 pl-1 text-slate-600">ราคา</label><input type="number" id="form-price-input" placeholder="0" class="w-full px-4 py-2.5 border-2 rounded-xl outline-none"></div></div>
+                    <div class="grid grid-cols-2 gap-3"><div><label class="block text-sm font-medium mb-1 pl-1 text-slate-600">สต็อก</label><input type="number" id="form-stock-input" placeholder="0" class="w-full px-4 py-2.5 border-2 rounded-xl outline-none" min="0"></div><div><label class="block text-sm font-medium mb-1 pl-1 text-slate-600">ราคา</label><input type="number" id="form-price-input" placeholder="0" class="w-full px-4 py-2.5 border-2 rounded-xl outline-none" min="0"></div></div>
                 </div>
                 <button id="product-save-btn" class="w-full mt-6 py-3.5 bg-brand-500 text-white rounded-xl font-bold shadow-lg active:scale-95 transition-all">บันทึกข้อมูลสินค้า</button>
             </div>
         </div>
 
-        <!-- Cart Checkout -->
+        <!-- Cart Checkout Modal -->
         <div id="checkout-modal" class="fixed inset-0 z-[70] hidden items-center justify-center p-4">
             <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay"></div>
             <div class="bg-white w-full max-w-[340px] rounded-3xl p-6 shadow-2xl relative z-10 modal-enter flex flex-col max-h-[85vh]">
@@ -223,20 +233,20 @@
                     <div class="w-full flex justify-between px-2 mb-6"><span class="font-cute text-slate-500 font-bold text-2xl">Total</span><span id="cart-total-price" class="text-brand-600 font-bold text-2xl">0 ฿</span></div>
                     <p class="font-cute text-2xl font-bold text-slate-700 mb-4 tracking-wide">confirm?</p>
                     <div class="flex gap-3 w-full">
-                        <button id="checkout-yes-btn" class="font-cute flex-1 py-3 bg-white border-2 border-slate-300 rounded-xl font-bold text-xl active:scale-95 transition-all text-center">yes</button>
-                        <button class="modal-close-icon font-cute flex-1 py-3 bg-white border-2 border-slate-300 rounded-xl font-bold text-xl active:scale-95 transition-all text-center">No</button>
+                        <button id="checkout-yes-btn" class="font-cute flex-1 py-3 bg-white border-2 border-slate-300 rounded-xl font-bold text-xl active:scale-95 transition-all text-center hover:border-brand-400 hover:text-brand-500">yes</button>
+                        <button class="modal-close-icon font-cute flex-1 py-3 bg-white border-2 border-slate-300 rounded-xl font-bold text-xl active:scale-95 transition-all text-center hover:border-red-400 hover:text-red-500">No</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Final Receipt -->
+        <!-- Final Receipt Modal -->
         <div id="receipt-modal" class="fixed inset-0 z-[80] hidden items-center justify-center p-4 overflow-y-auto py-10 hide-scrollbar">
             <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay fixed"></div>
             <div class="bg-white w-full max-w-[320px] rounded-3xl p-6 shadow-2xl relative z-10 modal-enter border-2 border-brand-100 flex flex-col my-auto text-center">
                 <div class="flex justify-end mb-2"><button class="modal-close-icon text-slate-400"><i data-lucide="x" class="w-5 h-5 pointer-events-none"></i></button></div>
                 <h3 class="font-bold text-2xl text-slate-800 mb-4 tracking-tight">รายการสินค้าทั้งหมด</h3>
-                <div id="receipt-list" class="w-full mb-6"></div>
+                <div id="receipt-list" class="w-full mb-6 text-left"></div>
                 <div class="text-center mb-6 px-2 text-slate-600 font-medium leading-relaxed">รบกวนแคปหน้านี้ไว้แล้วส่งภาพ<br>ให้ผ่าน dm ทางร้านนะคะ</div>
                 <button id="receipt-contact-action" class="w-full py-3.5 bg-brand-500 text-white rounded-xl font-bold shadow-lg active:scale-95 text-lg transition-all">contact</button>
             </div>
@@ -266,7 +276,6 @@
         const appId = "bunnyshiro";
 
         // --- App State ---
-        window.db = db; window.appId = appId;
         let tags = [], products = [], cart = [];
         let currentEditId = null, currentBase64 = '';
         const ADMIN_PWD = "apunandbunnyriko";
@@ -299,6 +308,32 @@
                 };
             });
         }
+
+        // --- Handle File Upload Event Dynamically ---
+        document.addEventListener('change', async (e) => {
+            if(e.target && e.target.id === 'form-image-input') {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = async (ev) => {
+                        try {
+                            const compressed = await compressImage(ev.target.result);
+                            currentBase64 = compressed;
+                            const preview = document.getElementById('form-image-preview');
+                            const placeholder = document.getElementById('form-image-placeholder');
+                            if(preview && placeholder) {
+                                preview.src = compressed;
+                                preview.classList.remove('hidden');
+                                placeholder.classList.add('hidden');
+                            }
+                        } catch (err) {
+                            console.error("Compression failed:", err);
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        });
 
         // --- Rendering Core ---
         function renderEverything() {
@@ -347,9 +382,27 @@
             }
 
             const tagList = document.getElementById('tag-list-display');
-            tagList.innerHTML = tags.map(t => `<div class="flex justify-between items-center p-2.5 bg-white border rounded-xl shadow-sm"><div class="flex items-center gap-2"><div class="w-4 h-4 rounded-full ${t.isRainbow?'rainbow-tag':''}" style="background-color:${t.color}"></div><span class="text-sm font-semibold text-slate-700">${t.name}</span></div><button class="p-2 text-red-400 hover:bg-red-50 rounded-lg btn-del-tag" data-id="${t.id}"><i data-lucide="trash-2" class="w-4 h-4 pointer-events-none"></i></button></div>`).join('') || '<p class="text-center text-slate-400 text-xs py-10">ยังไม่มีข้อมูลแท็ก</p>';
+            tagList.innerHTML = tags.map(t => `
+                <div class="flex justify-between items-center p-2.5 bg-white border rounded-xl shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 rounded-full ${t.isRainbow?'rainbow-tag':''}" style="background-color:${t.color}"></div>
+                        <span class="text-sm font-semibold text-slate-700">${t.name}</span>
+                    </div>
+                    <button class="p-2 text-red-400 hover:bg-red-50 rounded-lg btn-del-tag" data-id="${t.id}"><i data-lucide="trash-2" class="w-4 h-4 pointer-events-none"></i></button>
+                </div>
+            `).join('') || '<p class="text-center text-slate-400 text-xs py-10">ยังไม่มีข้อมูลแท็ก</p>';
+            
             lucide.createIcons();
         }
+
+        const updateCartUI = () => {
+            const count = cart.reduce((s,i) => s + i.quantity, 0);
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = count;
+            badge.className = `absolute -top-1 -right-1 bg-pink-500 text-white text-[11px] font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-white transition-transform ${count > 0 ? 'scale-100' : 'scale-0'} text-center`;
+            const btn = document.getElementById('floating-cart-btn');
+            btn.classList.add('bump-anim'); setTimeout(() => btn.classList.remove('bump-anim'), 300);
+        };
 
         const renderCartList = () => {
             const list = document.getElementById('cart-list');
@@ -357,37 +410,72 @@
             let totalVal = 0;
             list.innerHTML = cart.map(i => {
                 totalVal += (i.product.price * i.quantity);
-                return `<div class="flex items-center gap-3 p-3 bg-slate-50 border rounded-2xl relative"><div class="w-12 h-12 shrink-0 bg-white rounded-lg border overflow-hidden flex items-center justify-center">${i.product.image ? `<img src="${i.product.image}" class="w-full h-full object-cover">` : `<i data-lucide="package" class="w-5 h-5 text-brand-100"></i>`}</div><div class="flex-grow min-w-0"><h4 class="font-cute font-bold text-slate-700 truncate leading-tight">${i.product.name} <span class="text-brand-500 ml-1">x${i.quantity}</span></h4><p class="text-[11px] text-slate-500 font-bold">${i.product.price} ฿</p></div><button class="p-2 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors btn-remove-item" data-id="${i.product.id}"><i data-lucide="trash-2" class="w-4 h-4 pointer-events-none"></i></button></div>`;
+                return `
+                    <div class="flex items-center gap-3 p-3 bg-slate-50 border rounded-2xl relative">
+                        <div class="w-12 h-12 shrink-0 bg-white rounded-lg border overflow-hidden flex items-center justify-center">
+                            ${i.product.image ? `<img src="${i.product.image}" class="w-full h-full object-cover">` : `<i data-lucide="package" class="w-5 h-5 text-brand-100"></i>`}
+                        </div>
+                        <div class="flex-grow min-w-0">
+                            <h4 class="font-cute font-bold text-slate-700 truncate leading-tight">${i.product.name} <span class="text-brand-500 ml-1">x${i.quantity}</span></h4>
+                            <p class="text-[11px] text-slate-500 font-bold">${i.product.price} ฿</p>
+                        </div>
+                        <button class="p-2 text-red-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors btn-remove-item" data-id="${i.product.id}">
+                            <i data-lucide="trash-2" class="w-4 h-4 pointer-events-none"></i>
+                        </button>
+                    </div>`;
             }).join('') || '<div class="py-10 text-center text-slate-300 flex flex-col items-center gap-2"><i data-lucide="shopping-cart" class="w-10 h-10 opacity-50"></i><p>ตะกร้าว่างเปล่า</p></div>';
             totalText.innerText = totalVal + ' ฿';
             lucide.createIcons();
         };
 
-        function updateCartBadge() {
-            const count = cart.reduce((s,i)=>s+i.quantity, 0);
-            const badge = document.getElementById('cart-badge');
-            badge.innerText = count;
-            badge.className = `absolute -top-1 -right-1 bg-pink-500 text-white text-[11px] font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-white transition-transform ${count > 0 ? 'scale-100' : 'scale-0'} text-center`;
-            const btn = document.getElementById('floating-cart-btn');
-            btn.classList.add('bump-anim'); setTimeout(()=>btn.classList.remove('bump-anim'), 300);
-        }
-
-        // --- Global Interactions (Delegation) ---
+        // --- Global Event Delegation ---
         document.addEventListener('click', async (e) => {
             const t = e.target;
-            const closeBtn = t.closest('.modal-close-icon') || t.closest('.modal-overlay');
-            if (closeBtn) { const m = t.closest('.fixed'); m.classList.add('hidden'); m.classList.remove('flex'); return; }
-
-            if (t.closest('#nav-contact-btn') || t.closest('#receipt-contact-action')) { document.getElementById('contact-footer').scrollIntoView({ behavior: 'smooth' }); t.closest('.fixed')?.classList.add('hidden'); }
-            if (t.closest('#how-to-order-btn')) { document.getElementById('how-to-modal').classList.remove('hidden'); document.getElementById('how-to-modal').classList.add('flex'); }
-
-            if (t.closest('#admin-login-trigger')) { document.getElementById('admin-password-input').value = ''; document.getElementById('password-modal').classList.remove('hidden'); document.getElementById('password-modal').classList.add('flex'); }
-            if (t.closest('#admin-login-submit')) {
-                if(document.getElementById('admin-password-input').value === ADMIN_PWD) { document.body.classList.add('admin-active'); document.getElementById('password-modal').classList.add('hidden'); }
+            
+            // 1. Modals (Close) - Fix overlapping classes
+            if (t.closest('.modal-close-icon') || t.closest('.modal-overlay')) {
+                const modal = t.closest('.fixed');
+                if(modal) { 
+                    modal.classList.add('hidden'); 
+                    modal.classList.remove('flex'); 
+                }
+                return;
             }
-            if (t.closest('#admin-logout-trigger')) { document.body.classList.remove('admin-active'); document.getElementById('admin-password-input').value = ''; }
 
-            if (t.closest('#admin-tags-btn')) { document.getElementById('tag-modal').classList.remove('hidden'); document.getElementById('tag-modal').classList.add('flex'); }
+            // 2. Navigation
+            if (t.closest('#nav-contact-btn') || t.closest('#receipt-contact-action')) {
+                document.getElementById('contact-footer').scrollIntoView({ behavior: 'smooth' });
+                const m = t.closest('.fixed');
+                if(m) { m.classList.add('hidden'); m.classList.remove('flex'); }
+            }
+            if (t.closest('#how-to-order-btn')) { 
+                const m = document.getElementById('how-to-modal');
+                m.classList.remove('hidden'); m.classList.add('flex'); 
+            }
+
+            // 3. Admin Auth
+            if (t.closest('#admin-login-trigger')) { 
+                document.getElementById('admin-password-input').value = '';
+                const m = document.getElementById('password-modal');
+                m.classList.remove('hidden'); m.classList.add('flex'); 
+            }
+            if (t.closest('#admin-login-submit')) {
+                if(document.getElementById('admin-password-input').value === ADMIN_PWD) {
+                    document.body.classList.add('admin-active');
+                    const m = document.getElementById('password-modal');
+                    m.classList.add('hidden'); m.classList.remove('flex');
+                }
+            }
+            if (t.closest('#admin-logout-trigger')) {
+                document.body.classList.remove('admin-active');
+                document.getElementById('admin-password-input').value = '';
+            }
+
+            // 4. Admin Actions (Tags)
+            if (t.closest('#admin-tags-btn')) { 
+                const m = document.getElementById('tag-modal');
+                m.classList.remove('hidden'); m.classList.add('flex'); 
+            }
             if (t.closest('#add-tag-btn-action')) {
                 const n = document.getElementById('new-tag-name').value;
                 const c = document.getElementById('new-tag-color').value;
@@ -396,86 +484,123 @@
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'tags'), { name: n, color: c, isRainbow: r });
                 document.getElementById('new-tag-name').value = '';
             }
-            if (t.closest('.btn-del-tag')) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tags', t.closest('.btn-del-tag').dataset.id)); }
+            if (t.closest('.btn-del-tag')) { 
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'tags', t.closest('.btn-del-tag').dataset.id)); 
+            }
 
+            // 5. Admin Actions (Products)
             if (t.closest('#admin-add-btn')) {
                 currentEditId = null; currentBase64 = '';
                 document.getElementById('product-modal-title').innerText = "เพิ่มสินค้าใหม่";
-                document.getElementById('form-name-input').value = ''; document.getElementById('form-stock-input').value = ''; document.getElementById('form-price-input').value = '';
-                document.getElementById('form-image-preview').classList.add('hidden'); document.getElementById('form-image-placeholder').classList.remove('hidden');
-                document.getElementById('product-modal').classList.remove('hidden'); document.getElementById('product-modal').classList.add('flex');
+                document.getElementById('form-name-input').value = '';
+                document.getElementById('form-stock-input').value = '';
+                document.getElementById('form-price-input').value = '';
+                // Reset file input value so same file can be selected again
+                document.getElementById('form-image-input').value = ''; 
+                document.getElementById('form-image-preview').classList.add('hidden');
+                document.getElementById('form-image-placeholder').classList.remove('hidden');
+                const m = document.getElementById('product-modal');
+                m.classList.remove('hidden'); m.classList.add('flex');
             }
             if (t.closest('.btn-edit-p')) {
                 const p = products.find(x => x.id === t.closest('.btn-edit-p').dataset.id);
                 currentEditId = p.id; currentBase64 = p.image || '';
                 document.getElementById('product-modal-title').innerText = "แก้ไขสินค้า";
-                document.getElementById('form-name-input').value = p.name; document.getElementById('form-stock-input').value = p.stock; document.getElementById('form-price-input').value = p.price; document.getElementById('form-tag-select').value = p.tagId;
-                if(p.image) { document.getElementById('form-image-preview').src = p.image; document.getElementById('form-image-preview').classList.remove('hidden'); document.getElementById('form-image-placeholder').classList.add('hidden'); }
-                else { document.getElementById('form-image-preview').classList.add('hidden'); document.getElementById('form-image-placeholder').classList.remove('hidden'); }
-                document.getElementById('product-modal').classList.remove('hidden'); document.getElementById('product-modal').classList.add('flex');
+                document.getElementById('form-name-input').value = p.name;
+                document.getElementById('form-stock-input').value = p.stock;
+                document.getElementById('form-price-input').value = p.price;
+                document.getElementById('form-tag-select').value = p.tagId;
+                document.getElementById('form-image-input').value = ''; 
+                if(p.image) {
+                    document.getElementById('form-image-preview').src = p.image;
+                    document.getElementById('form-image-preview').classList.remove('hidden');
+                    document.getElementById('form-image-placeholder').classList.add('hidden');
+                } else {
+                    document.getElementById('form-image-preview').classList.add('hidden');
+                    document.getElementById('form-image-placeholder').classList.remove('hidden');
+                }
+                const m = document.getElementById('product-modal');
+                m.classList.remove('hidden'); m.classList.add('flex');
             }
-            if (t.closest('.btn-del-p')) { await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', t.closest('.btn-del-p').dataset.id)); }
+            if (t.closest('.btn-del-p')) { 
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', t.closest('.btn-del-p').dataset.id)); 
+            }
             
+            // --- Save Logic ---
             if (t.closest('#product-save-btn')) {
                 const n = document.getElementById('form-name-input').value;
                 const s = parseInt(document.getElementById('form-stock-input').value) || 0;
                 const pr = parseInt(document.getElementById('form-price-input').value) || 0;
                 const tId = document.getElementById('form-tag-select').value;
                 if (!n) return;
-                const b = document.getElementById('product-save-btn'); b.innerText = "กำลังบันทึก..."; b.disabled = true;
+
+                const btn = document.getElementById('product-save-btn');
+                btn.innerText = "กำลังบันทึก..."; btn.disabled = true;
+
                 try {
-                    const d = { name: n, stock: s, price: pr, tagId: tId, image: currentBase64 };
-                    if (currentEditId) await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', currentEditId), d);
-                    else await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), d);
-                    document.getElementById('product-modal').classList.add('hidden');
-                } finally { b.innerText = "บันทึกข้อมูลสินค้า"; b.disabled = false; }
+                    const data = { name: n, stock: s, price: pr, tagId: tId, image: currentBase64 };
+                    if (currentEditId) await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', currentEditId), data);
+                    else await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'products'), data);
+                    
+                    const m = document.getElementById('product-modal');
+                    m.classList.add('hidden'); m.classList.remove('flex');
+                } catch (err) {
+                    console.error("Save Error:", err);
+                } finally {
+                    btn.innerText = "บันทึกข้อมูลสินค้า"; btn.disabled = false;
+                }
             }
 
+            // 6. Buy / Cart Logic
             if (t.closest('.btn-buy-p')) {
                 const p = products.find(x => x.id === t.closest('.btn-buy-p').dataset.id);
                 const inC = cart.find(i => i.product.id === p.id);
                 if ((inC?.quantity || 0) >= p.stock) {
-                    const b = t.closest('.btn-buy-p'); const old = b.innerHTML; b.innerHTML = "เต็มสต็อก!"; b.classList.add('text-red-500');
-                    setTimeout(() => { b.innerHTML = old; b.classList.remove('text-red-500'); lucide.createIcons(); }, 1000); return;
+                    const btn = t.closest('.btn-buy-p');
+                    const old = btn.innerHTML; btn.innerHTML = "เต็มสต็อก!"; btn.classList.add('text-red-500');
+                    setTimeout(() => { btn.innerHTML = old; btn.classList.remove('text-red-500'); lucide.createIcons(); }, 1000);
+                    return;
                 }
                 if (inC) inC.quantity++; else cart.push({ product: p, quantity: 1 });
                 updateCartBadge();
             }
-            if (t.closest('#floating-cart-btn')) { renderCartList(); document.getElementById('checkout-modal').classList.remove('hidden'); document.getElementById('checkout-modal').classList.add('flex'); }
+            if (t.closest('#floating-cart-btn')) {
+                renderCartList();
+                const m = document.getElementById('checkout-modal');
+                m.classList.remove('hidden'); m.classList.add('flex');
+            }
             if (t.closest('.btn-remove-item')) {
                 cart = cart.filter(item => item.product.id !== t.closest('.btn-remove-item').dataset.id);
                 renderCartList(); updateCartBadge();
             }
             if (t.closest('#checkout-yes-btn')) {
                 if(cart.length === 0) return;
-                const rl = document.getElementById('receipt-list'); const many = cart.length > 5;
+                const rl = document.getElementById('receipt-list');
+                const many = cart.length > 5;
                 rl.className = many ? "bg-slate-50 rounded-xl p-4 border grid grid-cols-2 gap-2 shadow-inner" : "bg-slate-50 rounded-xl p-5 border flex flex-col gap-2 shadow-inner";
-                rl.innerHTML = cart.map(i => `<p class="font-medium text-slate-700 ${many?'text-[12px]':'text-[16px]'} truncate font-semibold leading-relaxed text-center">- ${i.product.name} (x${i.quantity})</p>`).join('');
+                rl.innerHTML = cart.map(i => `<p class="font-medium text-slate-700 ${many?'text-[12px]':'text-[16px]'} truncate font-semibold leading-relaxed text-left">- ${i.product.name} (x${i.quantity})</p>`).join('');
                 cart = []; updateCartBadge();
-                document.getElementById('checkout-modal').classList.add('hidden');
-                setTimeout(() => { document.getElementById('receipt-modal').classList.remove('hidden'); document.getElementById('receipt-modal').classList.add('flex'); }, 300);
+                
+                const cModal = document.getElementById('checkout-modal');
+                cModal.classList.add('hidden'); cModal.classList.remove('flex');
+                
+                setTimeout(() => { 
+                    const rModal = document.getElementById('receipt-modal');
+                    rModal.classList.remove('hidden'); rModal.classList.add('flex'); 
+                }, 300);
             }
-            if (t.closest('#hero-buy-btn')) document.getElementById('product-section').scrollIntoView({ behavior: 'smooth' });
+            if (t.closest('#hero-buy-btn')) {
+                document.getElementById('product-section').scrollIntoView({ behavior: 'smooth' });
+            }
         });
 
-        // Search & Input Logic
-        document.getElementById('search-input').addEventListener('input', renderAll);
-        document.getElementById('filter-tag-select').addEventListener('change', renderAll);
-        document.getElementById('form-image-input').addEventListener('change', (e) => {
-            const f = e.target.files[0];
-            if(f) {
-                const r = new FileReader();
-                r.onload = async (ev) => {
-                    const comp = await compressImage(ev.target.result); currentBase64 = comp;
-                    document.getElementById('form-image-preview').src = comp;
-                    document.getElementById('form-image-preview').classList.remove('hidden');
-                    document.getElementById('form-image-placeholder').classList.add('hidden');
-                };
-                r.readAsDataURL(f);
-            }
-        });
+        // Search Inputs
+        document.getElementById('search-input').addEventListener('input', renderEverything);
+        document.getElementById('filter-tag-select').addEventListener('change', renderEverything);
 
         lucide.createIcons();
     </script>
 </body>
 </html>
+
+
