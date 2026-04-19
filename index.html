@@ -83,7 +83,7 @@
         </section>
 
         <!-- Shop Section -->
-        <section id="product-section" class="px-5 pb-8 bg-brand-50/30 rounded-t-3xl pt-8 flex-grow">
+        <section id="product-section" class="px-5 pb-12 bg-brand-50/30 rounded-t-3xl pt-8 flex-grow">
             <div class="flex gap-2 mb-6">
                 <div class="relative flex-grow">
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-brand-300"><i data-lucide="search" class="w-4 h-4"></i></div>
@@ -111,8 +111,35 @@
             <div id="empty-state" class="hidden flex-col items-center justify-center py-10 text-slate-400 text-center"><i data-lucide="ghost" class="w-12 h-12 mb-3 opacity-50"></i><p>ไม่พบสินค้าที่คุณค้นหา</p></div>
         </section>
 
-        <!-- Footer -->
-        <footer id="contact-footer" class="mt-auto pt-10 pb-12 bg-white flex flex-col items-center rounded-t-3xl border-t pb-28 text-center">
+        <!-- ===================================== -->
+        <!-- PROOF SECTION (หลักฐานการซื้อขาย)       -->
+        <!-- ===================================== -->
+        <section id="proof-section" class="bg-white rounded-t-3xl pt-8 pb-10 px-6 -mt-6 relative z-10 shadow-[0_-10px_20px_rgba(0,0,0,0.02)]">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-cute text-2xl font-bold text-slate-800 flex items-center gap-2">
+                    <i data-lucide="images" class="w-6 h-6 text-brand-500"></i> รีวิว & หลักฐาน
+                </h2>
+                
+                <!-- Admin Add Proof Button -->
+                <div class="admin-only">
+                    <input type="file" id="proof-image-input" accept="image/*" class="hidden">
+                    <button id="admin-add-proof-btn" class="bg-brand-50 hover:bg-brand-100 text-brand-600 border border-brand-200 px-3 py-1.5 rounded-xl text-sm font-semibold transition-all active:scale-95 flex items-center gap-1.5 shadow-sm">
+                        <i data-lucide="plus" class="w-4 h-4 pointer-events-none"></i> เพิ่มรูป
+                    </button>
+                </div>
+            </div>
+
+            <!-- Proof Grid Container -->
+            <div id="proof-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <!-- Proof images will be injected here -->
+            </div>
+            <div id="proof-empty-state" class="hidden text-center py-8 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 text-sm font-medium">
+                ยังไม่มีรูปภาพหลักฐาน
+            </div>
+        </section>
+
+        <!-- Footer / Contact -->
+        <footer id="contact-footer" class="mt-auto pt-6 pb-12 bg-white flex flex-col items-center pb-28 text-center border-t border-slate-100">
             <h3 class="font-cute text-2xl font-bold text-brand-600 mb-6 flex items-center gap-2 text-center"><i data-lucide="messages-square" class="w-6 h-6"></i> Contact</h3>
             
             <div class="flex gap-3 mb-10 w-full px-10 justify-center">
@@ -138,6 +165,17 @@
 
         <!-- ================= MODALS ================= -->
         
+        <!-- Zoom Proof Image Modal -->
+        <div id="proof-zoom-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 backdrop-blur-md">
+            <div class="absolute inset-0 bg-slate-900/80 modal-overlay cursor-pointer"></div>
+            <div class="relative z-10 w-full max-w-[90vw] md:max-w-md flex flex-col items-center modal-enter">
+                <button type="button" class="modal-close-icon absolute -top-12 right-0 bg-white/20 hover:bg-white/40 text-white p-2 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-6 h-6 pointer-events-none"></i>
+                </button>
+                <img id="proof-zoom-img" src="" alt="Proof Fullscreen" class="w-full max-h-[80vh] object-contain rounded-xl shadow-2xl pointer-events-none bg-black/10">
+            </div>
+        </div>
+
         <!-- Password Modal -->
         <div id="password-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
             <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm modal-overlay"></div>
@@ -280,7 +318,7 @@
         const appId = "bunnyshiro";
 
         // --- App State ---
-        let tags = [], products = [], cart = [];
+        let tags = [], products = [], cart = [], proofs = [];
         let currentEditId = null, currentBase64 = '';
         const ADMIN_PWD = "apunandbunnyriko";
 
@@ -294,6 +332,11 @@
                 products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
                 renderEverything();
                 document.getElementById('loading-screen')?.classList.add('hidden');
+            });
+            // Fetch Proof Images Collection
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'proofs'), snap => {
+                proofs = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => b.createdAt - a.createdAt);
+                renderProofs();
             });
         }).catch(() => document.getElementById('loading-screen')?.classList.add('hidden'));
 
@@ -313,8 +356,9 @@
             });
         }
 
-        // --- Handle File Upload Event Dynamically ---
+        // --- Handle All File Uploads ---
         document.addEventListener('change', async (e) => {
+            // Product Image Upload
             if(e.target && e.target.id === 'form-image-input') {
                 const file = e.target.files[0];
                 if(file) {
@@ -330,8 +374,37 @@
                                 preview.classList.remove('hidden');
                                 placeholder.classList.add('hidden');
                             }
+                        } catch (err) { console.error("Compression failed:", err); }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            // Proof Image Upload (Admin)
+            if(e.target && e.target.id === 'proof-image-input') {
+                const file = e.target.files[0];
+                if(file) {
+                    const btn = document.getElementById('admin-add-proof-btn');
+                    const oldHtml = btn.innerHTML;
+                    btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin pointer-events-none"></i> กำลังอัปโหลด';
+                    btn.disabled = true;
+
+                    const reader = new FileReader();
+                    reader.onload = async (ev) => {
+                        try {
+                            // Compress Proof slightly larger for readability
+                            const compressed = await compressImage(ev.target.result, 800, 800);
+                            await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'proofs'), { 
+                                image: compressed,
+                                createdAt: Date.now()
+                            });
                         } catch (err) {
-                            console.error("Compression failed:", err);
+                            console.error("Proof upload failed:", err);
+                        } finally {
+                            btn.innerHTML = oldHtml;
+                            btn.disabled = false;
+                            lucide.createIcons();
+                            e.target.value = ''; // Reset input
                         }
                     };
                     reader.readAsDataURL(file);
@@ -339,7 +412,34 @@
             }
         });
 
-        // --- Rendering Core ---
+        // --- Render Proof Images ---
+        function renderProofs() {
+            const grid = document.getElementById('proof-grid');
+            const emptyState = document.getElementById('proof-empty-state');
+            
+            if(proofs.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                grid.innerHTML = proofs.map(p => `
+                    <div class="relative group aspect-square rounded-2xl overflow-hidden shadow-sm border border-slate-100 bg-slate-50 cursor-pointer card-hover" data-url="${p.image}">
+                        <img src="${p.image}" class="w-full h-full object-cover pointer-events-none">
+                        
+                        <!-- Overlay & Click Handler for Fullscreen View -->
+                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors z-10 btn-view-proof"></div>
+                        
+                        <!-- Admin Delete Button -->
+                        <button type="button" class="admin-only absolute top-2 right-2 bg-red-500/90 hover:bg-red-600 text-white p-2 rounded-xl shadow-md transition-all z-20 active:scale-90 btn-del-proof" data-id="${p.id}">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5 pointer-events-none"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        // --- Rendering Products Core ---
         function renderEverything() {
             // Update Filter & Selects
             const sTags = [...tags].sort((a,b) => a.name.localeCompare(b.name));
@@ -477,6 +577,26 @@
                 document.getElementById('admin-password-input').value = '';
             }
 
+            // --- Proof System Events ---
+            // Trigger Add Proof File Input
+            if (t.closest('#admin-add-proof-btn')) {
+                document.getElementById('proof-image-input').click();
+            }
+            // Delete Proof
+            if (t.closest('.btn-del-proof')) {
+                const id = t.closest('.btn-del-proof').dataset.id;
+                if(confirm('ยืนยันลบรูปภาพหลักฐานนี้ใช่หรือไม่?')) {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'proofs', id)); 
+                }
+            }
+            // View Fullscreen Proof
+            if (t.closest('.btn-view-proof')) {
+                const url = t.closest('.group').dataset.url;
+                document.getElementById('proof-zoom-img').src = url;
+                const m = document.getElementById('proof-zoom-modal');
+                m.classList.remove('hidden'); m.classList.add('flex');
+            }
+
             // Tags Manage
             if (t.closest('#admin-tags-btn')) { 
                 const m = document.getElementById('tag-modal');
@@ -612,5 +732,4 @@
     </script>
 </body>
 </html>
-
 
